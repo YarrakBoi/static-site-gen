@@ -1,6 +1,6 @@
-from generator import generate_page
+from generator import generate_pages_recursive
 
 def main():
-    generate_page("content/index.md", "template.html","public/index.html")
+    generate_pages_recursive("content", "template.html","public")
     
 main()

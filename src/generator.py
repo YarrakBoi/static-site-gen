@@ -17,10 +17,10 @@ def recursion_copy(source,dest,file_list):
         return 0
     file = file_list.pop()
     curr = os.path.join(source, file) 
-    if os.path.exists(curr) == True and os.path.isfile(curr):
+    if os.path.isfile(curr):
         shutil.copy(curr, os.path.join(dest, file))
         print(f"copied file is {file}")
-    elif os.path.exists(curr) == True and os.path.isdir(curr):
+    elif os.path.isdir(curr):
         new_dir = os.path.join(dest,file)
         os.mkdir(new_dir)
         recursion_copy(curr, new_dir, os.listdir(curr))
@@ -51,10 +51,23 @@ def generate_page(from_path, template_path, dest_path):
     template_file_content = template_file_content.replace("{{ Content }}", cleaned_html)
     
     if not os.path.exists(dest_path):
-        os.makedirs(os.path.dirname(dest_path),exist_ok=True)
+        print(f"created new dir : {dest_path}")
+        os.makedirs(dest_path, exist_ok=True)
     
-    with open(dest_path, "w+") as f:
+    with open(dest_path + "/index.html", "w+") as f:
         f.write(template_file_content)
+        
+def generate_pages_recursive(dir_path_content, template_path, dest_dir_path):
+    path_list = os.listdir(dir_path_content)
+    if not path_list:
+        return 0
+    for path in path_list:
+        full_path = os.path.join(dir_path_content,path)
+        if os.path.isfile(full_path):
+            generate_page(full_path, template_path, dest_dir_path)
+        elif os.path.isdir(full_path):
+            new_dir = os.path.split(full_path)[-1]
+            generate_pages_recursive(full_path, template_path, dest_dir_path+ "/" + new_dir)
 
 
     
