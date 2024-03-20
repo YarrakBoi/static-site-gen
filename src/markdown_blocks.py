@@ -133,15 +133,6 @@ def markdown_to_html_node(md):
             child_list.append(conv_olist_to_html(block))
     return ParentNode("div", child_list)
 
-md = """
-
-this is paragraph text
-
-"""
-
-print(markdown_to_html_node(md).to_html())
-#print(md.split("\n"))
-
             
             
 
